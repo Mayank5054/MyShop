@@ -4,9 +4,11 @@ const bodyParser=require("body-parser");
 const app=express();
 const Admin=require("./router/Admin");
 const Error = require("./router/ErrorRoute");
+const root=require("./utils/path");
+const path=require("path");
 app.use(bodyParser.urlencoded({extended:true}));
 
-
+app.use(express.static(path.join(root,"Public")));
 app.use("/admin",Admin);
 app.use(Error);
 
