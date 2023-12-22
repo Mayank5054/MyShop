@@ -12,6 +12,7 @@ router.use("/add-product",AdminContoller.addProduct);
 
 router.use("/all-product",AdminContoller.allProduct);
 
-router.use("/",AdminContoller.root);
+router.use("/productAdded",AdminContoller.productAdded);
+router.use("/home",AdminContoller.root);
 
 module.exports=router;
