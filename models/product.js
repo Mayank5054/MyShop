@@ -3,11 +3,12 @@ const fs=require("fs");
 const path=require("path");
 const root=require("../utils/path");
 var p1=path.join(root,"data","file.txt");
+var id=0;
 module.exports = class Product{
     
     constructor(t){
-       
         this.title=t;
+        this.id=id++;
     }
 
     save(){
