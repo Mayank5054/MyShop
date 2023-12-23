@@ -8,9 +8,13 @@ exports.getProductById=(req,res,next)=>{
     // console.log(id);
     fs.readFile(path1,(err,data)=>{
 console.log(data);
-const data1 = JSON.parse(data);
+var data1 = JSON.parse(data);
 console.log(typeof data1);
-console.log( data1.filter(a=>a.id==id) ) ;
+data1 = data1.filter(a=>a.id==id) ;
+res.render("product.ejs",{
+    title:data1[0].title,
+    id:data[0].id
+});
     });
 }
 
@@ -19,5 +23,25 @@ exports.addToCart=(req,res,next)=>{
     var price=5000;
     Cart.addProduct(id,price);
     console.log("cart created");
-    res.send("cart updated");
+    // res.send("cart updated");
+}
+
+exports.editProduct=(req,res,next)=>{
+const id=req.body.id;
+console.log(id);
+// res.send("All done Edit");
+res.render("editForm.ejs",{
+    id:id
+});
+}
+
+
+exports.deleteProduct=(req,res,next)=>{
+    const id=req.body.id;
+console.log(id);
+res.send("All done Delete");
+}
+
+exports.anon=(req,res,next)=>{
+console.log(req.body);
 }

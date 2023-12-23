@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>Product</title>
+        <link rel="stylesheet" href="/styles/first.css">
+    </head>
+    <body>
+        <% for (const a of data) {%>
+        <div class="div_main">
+            
+            <h1> <%= a.title %> </h1>
+            <form action="/admin/editProduct" method="POST">
+                <input type="hidden" value="<%= a.id %>" name="id">
+                <input type="submit" name="edit" value="edit"></input>
+            </form>
+            <form action="/admin/deleteProduct" method="POST">
+                <input type="hidden" value="<%= a.id %>" name="id" >
+                <input type="submit" name="delete" value="delete"></input>
+            </form>
+
+            
+
+        </div>
+        <% }%>
+    </body>
+</html>

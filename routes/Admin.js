@@ -20,5 +20,7 @@ router.use("/productAdded",AdminContoller.productAdded);
 router.use("/home",AdminContoller.root);
 
 router.get("/addToCart",ProductController.addToCart);
-
+router.post("/editProduct",ProductController.editProduct);
+router.post("/deleteProduct",ProductController.deleteProduct);
+router.post("/anon",ProductController.anon);
 module.exports=router;

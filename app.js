@@ -7,8 +7,11 @@ const ProductView=require("./routes/Product");
 const Error = require("./routes/ErrorRoute");
 const root=require("./utils/path");
 const path=require("path");
-app.use(bodyParser.urlencoded({extended:true}));
 
+app.set("view engine","ejs");
+app.set("views","views");
+app.engine("ejs",require("ejs").__express);
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(path.join(root,"Public")));
 app.use("/admin",Admin);
 app.use(ProductView);
@@ -26,4 +29,6 @@ app.use(Error);
 
 const server=http.createServer(app);
 
-server.listen(5354);
+server.listen(5354,()=>{
+    console.log("server created"); 
+});

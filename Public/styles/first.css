@@ -1,3 +1,18 @@
 body{
-    background:Red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.div_main{
+    height:150px;
+    width:150px;
+    background:white;
+    border-radius:15px;
+    box-shadow:1px 1px 5px black;
+    display: flex;
+    align-items:center ;
+    justify-content: center;
+    flex-direction: column;
+    margin-right:20px;
 }
