@@ -8,7 +8,6 @@ module.exports = class Cart {
     static addProduct(id,productPrice) {
         var cart = { products: [], totalPrice: 0 };
         fs.readFile(path1, (err, data) => {
-            
             console.log(data);
             if (!err) {
                 cart = JSON.parse(data);
@@ -20,7 +19,6 @@ module.exports = class Cart {
                 update = { ...cart.products.filter(a => a.id == id)[0] };
                 update.qty = update.qty + 1;
                 cart.products.filter(a=>a.id==id)[0].qty= cart.products.filter(a=>a.id==id)[0].qty+1;
-                
             } 
             else {
                 console.log("else executed");
