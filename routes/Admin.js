@@ -11,6 +11,9 @@ const AdminContoller = require("../contollers/AdminController");
 
 const ProductController = require("../contollers/ProductController");
 
+router.use("/main",(req,res,next)=>{
+    res.render("./Sequelize_views/nav.ejs");
+})
 router.use("/add-product",AdminContoller.addProduct);
 
 router.use("/all-product",AdminContoller.allProduct);

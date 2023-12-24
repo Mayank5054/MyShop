@@ -1,17 +1,17 @@
-const seq=require("../utils/db_sequelize");
-const {Sequelize,DataTypes}=require("sequelize");
+// const seq=require("../utils/db_sequelize");
+// const {Sequelize,DataTypes}=require("sequelize");
 
-const user= seq.define('User',{
-title:{
-    type:DataTypes.STRING
-},
-id1:{
-    type:DataTypes.INTEGER,
-    autoIncrement:true,
-    primaryKey:true
-},
+// const user= seq.define('Products',{
+// title:{
+//     type:DataTypes.STRING
+// },
+// id:{
+//     type:DataTypes.INTEGER,
+//     autoIncrement:true,
+//     primaryKey:true
+// },
 
-});
+// });
 
-  module.exports=user;
+//   module.exports=user;
 

@@ -1,0 +1,19 @@
+body{
+    margin:0px;
+    padding:0px;
+}
+.nav_div{
+    background:red;
+    height:70px;
+    width:100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+a{
+    margin-left:25px;
+    font-size:18px;
+    color:bisque;
+    outline:none;
+    text-decoration: none;
+}

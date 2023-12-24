@@ -7,5 +7,5 @@ const connection = mysql.createConnection({
     database: 'myShop'
   });
   
-  connection.execute("truncate table products");
+  // connection.execute("truncate table products");
 module.exports=connection.promise();

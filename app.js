@@ -7,17 +7,23 @@ const ProductView = require("./routes/Product");
 const Error = require("./routes/ErrorRoute");
 const root = require("./utils/path");
 const path = require("path");
-const seq_model = require("./models/sequelize_product");
-const seq = require("./utils/db_sequelize");
+const product_model=require("./models_sequelize/product");
+const sequqlize_routes=require("./routes/Sequelize_routes/Admin");
 
+// const seq_model = require("./models/sequelize_product");
+const seq = require("./utils/db_sequelize");
+  
 app.set("view engine", "ejs");
 app.set("views", "views");
 app.engine("ejs", require("ejs").__express);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(root, "Public")));
 app.use("/admin", Admin);
+app.use("/Sequelize",sequqlize_routes);
+
 app.use(ProductView);
 app.use(Error);
+
 
 
 // app.use((req,res,next)=>{
@@ -31,22 +37,25 @@ app.use(Error);
 
 const server = http.createServer(app);
 
-seq.sync()
-    .then(
-        result => {
-            console.log(result);
-            seq_model.create({
-                title: "mayank "
-            });
-            seq_model.findAll()
-            .then(
-                e=>{
-                    console.log("data",e);
-                    console.log(e.length  );
-            });
-        })
-    .catch((e) => { console.log(e); })
 
-server.listen(5354, () => {
-    console.log("server created");
-}); 
+seq.sync({force:true})
+.then(e => {
+    server.listen(5354);
+})
+.catch((e)=>{console.log(e);});
+// seq.sync()
+//     .then(
+//         result => {
+//             console.log(result);
+//             seq_model.create({
+//                 title: "mayank "
+//             });
+//             seq_model.findAll()
+//             .then(
+//                 e=>{
+//                     console.log("data",e);
+//                     console.log(e.length  );
+//             });
+//         })
+//     .catch((e) => { console.log(e); })
+
