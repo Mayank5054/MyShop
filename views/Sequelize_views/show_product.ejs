@@ -4,9 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/styles/first.css">
 </head>
 <body>
     <%- include("./nav.ejs") %>
     <h1>Data Added Successfully</h1>
+    <% for (const a of products) {%>
+        <div class="div_main">
+
+            <h1> <%= a.title %> </h1>
+            <h1><%= a.price %></h1>
+            <form action="/admin/editProduct" method="POST">
+                <input type="hidden" value="<%= a.id %>" name="id">
+                <input type="submit" name="edit" value="edit"></input>
+            </form>
+            <form action="/admin/deleteProduct" method="POST">
+                <input type="hidden" value="<%= a.id %>" name="id" >
+                <input type="submit" name="delete" value="delete"></input>
+            </form>
+        </div>
+        <% }%>
 </body>
 </html>
