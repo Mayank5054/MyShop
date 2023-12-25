@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/first.css">
+</head>
+<body>
+    <%- include("./nav.ejs") %>
+    <% for (const a of products) {%>
+        <div class="div_main">
+            <h1> <%= a.title %> </h1>
+            <h1><%= a.price %></h1>
+            <form action="" method="POST">
+                <input type="hidden" value="<%= a.id %>" name="id">
+                <button type="submit" name="edit" value="">Add to Cart</button>
+            </form>
+        </div>
+        <% }%>
+</body>
+</html>

@@ -26,5 +26,15 @@ res.redirect("/Sequelize/showAllProduct");
         });
     })
     .catch();
-    
+ }
+
+ exports.products=(req,res,next)=>{
+  Product.findAll()
+  .then((e)=>{
+      console.log(e);
+      res.render("./Sequelize_views/showProducts.ejs",{
+          products:e
+      });
+  })
+  .catch();
  }
