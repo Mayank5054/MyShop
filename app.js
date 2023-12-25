@@ -7,7 +7,10 @@ const ProductView = require("./routes/Product");
 const Error = require("./routes/ErrorRoute");
 const root = require("./utils/path");
 const path = require("path");
-const product_model=require("./models_sequelize/product");
+const Product=require("./models_sequelize/product");
+const User=require("./models_sequelize/user");
+const Cart=require('./models_sequelize/cart');
+const CartItem=require('./models_sequelize/cartItem');
 const sequqlize_routes=require("./routes/Sequelize_routes/Admin");
 
 // const seq_model = require("./models/sequelize_product");
@@ -18,6 +21,14 @@ app.set("views", "views");
 app.engine("ejs", require("ejs").__express);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(root, "Public")));
+  
+app.use((req,res,next)=>{
+User.findByPk(1).then(user =>{
+    req.user=user;
+    next();
+}).catch(err =>{ console.log(err);});
+});
+
 app.use("/admin", Admin);
 app.use("/Sequelize",sequqlize_routes);
 
@@ -37,10 +48,45 @@ app.use(Error);
 
 const server = http.createServer(app);
 
+Product.belongsTo(User,{constraints:true,onDelete:'CASCADE'});
+User.hasMany(Product);
 
-seq.sync({force:true})
+User.hasOne(Cart);
+Cart.belongsTo(User);
+
+ Cart.belongsToMany(Product,{through:CartItem});
+ Product.belongsToMany(Cart,{through:CartItem});
+
+
+seq.sync()
 .then(e => {
-    server.listen(5354);
+    return User.findByPk(1)
+})
+.then(user =>{
+    if(!user){
+       return User.create({name:"Mayank",email:"mayanksheladiya49@gmail.com"})
+    }
+    return user;
+})
+.then(user =>{
+    console.log(user)
+    var fetchCart=null;
+    user.getCart().then(cart=>{
+        if(!cart){
+         user.createCart().then(e=>{
+            fetchCart=e;
+            console.log("cart creatd");
+         });
+        }
+        else{
+            fetchCart=user.getCart();
+        }
+    })
+    return fetchCart;
+})
+.then(user =>{
+    console.log(user);
+    server.listen(5354); 
 })
 .catch((e)=>{console.log(e);});
 // seq.sync()
