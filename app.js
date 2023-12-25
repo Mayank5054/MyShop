@@ -11,6 +11,8 @@ const Product=require("./models_sequelize/product");
 const User=require("./models_sequelize/user");
 const Cart=require('./models_sequelize/cart');
 const CartItem=require('./models_sequelize/cartItem');
+const Order=require("./models_sequelize/order");
+const OrderItem=require("./models_sequelize/orderItem");
 const sequqlize_routes=require("./routes/Sequelize_routes/Admin");
 
 // const seq_model = require("./models/sequelize_product");
@@ -54,11 +56,13 @@ User.hasMany(Product);
 User.hasOne(Cart);
 Cart.belongsTo(User);
 
- Cart.belongsToMany(Product,{through:CartItem});
- Product.belongsToMany(Cart,{through:CartItem});
+Cart.belongsToMany(Product,{through:CartItem});
+Product.belongsToMany(Cart,{through:CartItem});
 
+User.hasMany(Order);
+Order.belongsToMany(Product,{through:OrderItem});
 
-seq.sync()
+seq.sync({force:true})
 .then(e => {
     return User.findByPk(1)
 })

@@ -15,4 +15,5 @@ router.get("/showAllProduct",AdminContoller.showAllProduct);
 router.get("/products",AdminContoller.products);
 router.get("/getCart",AdminContoller.getCart);
 router.post("/addToCart",AdminContoller.addToCart);
+router.post("/placeOrder",AdminContoller.placeOrder);
 module.exports=router;

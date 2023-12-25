@@ -72,9 +72,7 @@ exports.getCart = (req, res, next) => {
         }
       )
       console.log(e);
-    })
-
-  
+    });
 }
 
 
@@ -140,3 +138,38 @@ exports.addToCart = (req, res, next) => {
     })
 
 }
+
+
+exports.placeOrder=(req,res,next)=>{
+  req.user.getCart()
+  .then(cart =>{
+    return cart.getProducts();
+  })
+  .then(products =>{
+    req.user.createOrder()
+    .then(order =>{
+      return order.addProducts(
+        products.map((product)=>{
+          product.orderItem = {quantity:product.cartItem.quantatiy};
+          return product;
+        })
+        );
+    })
+    .then(result =>{console.log("Order placed");
+    req.user.getCart().then(cart =>{
+      cart.setProducts(null);
+    })
+    req.user.getOrders({
+      include:['Products']
+    })
+    .then(orders =>{
+      console.log(orders);
+      res.render("./Sequelize_views/viewOrder.ejs",{
+        content:orders
+      });})
+    })
+   
+  })
+  
+}
+
