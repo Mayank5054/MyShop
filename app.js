@@ -15,6 +15,8 @@ const Order=require("./models_sequelize/order");
 const OrderItem=require("./models_sequelize/orderItem");
 const sequqlize_routes=require("./routes/Sequelize_routes/Admin");
 
+
+const mongoConnectFunction=require("./utils/mongodb");
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
   
@@ -90,7 +92,11 @@ seq.sync({force:true})
 })
 .then(user =>{
     console.log(user);
+    mongoConnectFunction( (client) => {
+     console.log("client",client);
+    });
     server.listen(5354); 
+    console.log("server created");
 })
 .catch((e)=>{console.log(e);});
 // seq.sync()
