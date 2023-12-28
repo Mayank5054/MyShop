@@ -15,17 +15,20 @@ const Order=require("./models_sequelize/order");
 const OrderItem=require("./models_sequelize/orderItem");
 const sequqlize_routes=require("./routes/Sequelize_routes/Admin");
 const userMongoDB=require("./models/mongoModels/Uers");
-
+const session = require("express-session");
+const mongoDBStore=require("connect-mongodb-session")(session);
 const {mongoConnectFunction}=require("./utils/mongodb");
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
-  
+  const store=new mongoDBStore({
+    uri:"mongodb+srv://Mayank5354:Mayank%2E5354@cluster0.yofgfpa.mongodb.net/myShop",
+    collection:"Sessions"
+  })
 app.set("view engine", "ejs");
 app.set("views", "views");
 app.engine("ejs", require("ejs").__express);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(root, "Public")));
-  
 // app.use((req,res,next)=>{
 // User.findByPk(1).then(user =>{
 //     req.user=user;
@@ -35,7 +38,17 @@ app.use(express.static(path.join(root, "Public")));
 
 // same as above but for mongodb
 
+
+app.use(session({
+    secret:"Mayank.5354",
+    resave:false,
+    saveUninitialized:false,
+    store:store
+}));
 app.use((req,res,next)=>{
+    // res.setHeader("Set-Cookie","isLoggedIn=true;Max-Age=1");
+    // req.isLoggedIn=true;
+    req.session.isLoggedIn=true;
     userMongoDB.findByEmailAndPassword("mayanksheladiya49@gmail.com","Mayank.5354")
     .then(user =>{
      console.log("User fetched sucessfully");

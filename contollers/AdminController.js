@@ -52,7 +52,8 @@ product.save();
 }
 
 exports.root = (req, res, next) => {
-    console.log(req);
+    console.log(req.session);
+
     res.sendFile(path.join(root, "views", "shop.html"));
 };
 

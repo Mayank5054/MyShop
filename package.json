@@ -19,7 +19,9 @@
   "homepage": "https://github.com/Mayank5054/MyShop#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "connect-mongodb-session": "^3.1.1",
     "ejs": "^3.1.9",
+    "express-session": "^1.17.3",
     "mongodb": "^6.3.0",
     "mysql2": "^3.6.5",
     "pug": "^3.0.2",
