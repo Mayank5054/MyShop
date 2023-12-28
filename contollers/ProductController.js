@@ -3,6 +3,8 @@ const path=require("path");
 const root=require("../utils/path");
 const path1=path.join(root,"data","file.txt");
 const Cart=require("../models/cart");
+const productModel=require("../models/mongoModels/Product");
+const Product = require("../models/mongoModels/Product");
 exports.getProductById=(req,res,next)=>{
     const id=req.params.id;
     // console.log(id);
@@ -19,27 +21,39 @@ res.render("product.ejs",{
 }
 
 exports.addToCart=(req,res,next)=>{
-    var id=1;
-    var price=5000;
-    Cart.addProduct(id,price);
-    console.log("cart created");
+    const prodID=req.body.id;
+    console.log("id",prodID);
+    Product.fetchParticular(prodID)
+    .then(product => {
+        // console.log("req.user",req.user);
+        console.log(product);
+        req.user.addToCart(product);
+
+    })
+    // var id=1;
+    // var price=5000;
+    // Cart.addProduct(id,price);
+    // console.log("cart created");
     // res.send("cart updated");
 }
 
 exports.editProduct=(req,res,next)=>{
-const id=req.body.id;
-console.log(id);
+    const id=req.body.id;
+    productModel.update(id);
+// const id=req.body.id;
+// console.log(id);
 // res.send("All done Edit");
-res.render("editForm.ejs",{
-    id:id
-});
+// res.render("editForm.ejs",{
+//     id:id
+// });
 }
 
 
 exports.deleteProduct=(req,res,next)=>{
     const id=req.body.id;
-console.log(id);
-res.send("All done Delete");
+
+productModel.delete(id);
+// res.send("All done Delete");
 }
 
 exports.anon=(req,res,next)=>{

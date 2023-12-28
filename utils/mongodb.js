@@ -1,14 +1,26 @@
-const mongodb=require("mongodb");
-const mongoClient=mongodb.MongoClient;
+const mongodb = require("mongodb");
+const mongoClient = mongodb.MongoClient;
+let _db;
 
-
-const  mongoConnectFunction = (callback) => {
-    mongoClient.connect("mongodb+srv://Mayank5354:Mayank%2E5354@cluster0.yofgfpa.mongodb.net/?retryWrites=true&w=majority")
-    .then(client=>{
-        console.log("Connection Created");
-        callback(client);
-})
-    .catch(e=>{console.log(e);console.log("connection error");});
+const mongoConnectFunction = (callback) => {
+    mongoClient
+    .connect("mongodb+srv://Mayank5354:Mayank%2E5354@cluster0.yofgfpa.mongodb.net/myShop?retryWrites=true&w=majority")
+        .then(client => {
+            _db = client.db();
+            callback();
+            console.log("Connection created");
+        })
+        .catch(e => { 
+            console.log(e); 
+            console.log("connection error"); 
+        });
 }
 
-module.exports=mongoConnectFunction;
+const getDB = () => {
+    if(_db){
+        return _db;
+    }
+    throw 'No DB found';
+}
+exports.mongoConnectFunction = mongoConnectFunction;
+exports.getDB=getDB;

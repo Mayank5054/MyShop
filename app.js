@@ -14,9 +14,9 @@ const CartItem=require('./models_sequelize/cartItem');
 const Order=require("./models_sequelize/order");
 const OrderItem=require("./models_sequelize/orderItem");
 const sequqlize_routes=require("./routes/Sequelize_routes/Admin");
+const userMongoDB=require("./models/mongoModels/Uers");
 
-
-const mongoConnectFunction=require("./utils/mongodb");
+const {mongoConnectFunction}=require("./utils/mongodb");
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
   
@@ -26,13 +26,25 @@ app.engine("ejs", require("ejs").__express);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(root, "Public")));
   
-app.use((req,res,next)=>{
-User.findByPk(1).then(user =>{
-    req.user=user;
-    next();
-}).catch(err =>{ console.log(err);});
-});
+// app.use((req,res,next)=>{
+// User.findByPk(1).then(user =>{
+//     req.user=user;
+//     next();
+// }).catch(err =>{ console.log(err);});
+// });
 
+// same as above but for mongodb
+
+app.use((req,res,next)=>{
+    userMongoDB.findByEmailAndPassword("mayanksheladiya49@gmail.com","Mayank.5354")
+    .then(user =>{
+     console.log("User fetched sucessfully");
+     console.log(user);
+     req.user= new userMongoDB(user.email,user.password,user.cart,user._id);
+    //  console.log("req.user",req.user);
+     next();
+    });
+})
 app.use("/admin", Admin);
 app.use("/Sequelize",sequqlize_routes);
 
@@ -92,10 +104,11 @@ seq.sync({force:true})
 })
 .then(user =>{
     console.log(user);
-    mongoConnectFunction( (client) => {
-     console.log("client",client);
+    mongoConnectFunction(()=>{
+       
+        server.listen(5354); 
     });
-    server.listen(5354); 
+  
     console.log("server created");
 })
 .catch((e)=>{console.log(e);});
