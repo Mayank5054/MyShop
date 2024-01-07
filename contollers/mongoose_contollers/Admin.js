@@ -20,6 +20,14 @@ price:price
 
 product.save()
 .then( result =>{
-    console.log("data added");
+    Product.find()
+    .then(data => {
+        res.render("./Mongoose_views/showAllProduct.ejs",
+        {data:data});
+        // console.log(data);
+    })
+    .catch(e =>{ console.log(e);})
+    // console.log("data added");
 })
+
 }
