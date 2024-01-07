@@ -19,6 +19,7 @@ const session = require("express-session");
 const mongoDBStore=require("connect-mongodb-session")(session);
 const {mongoConnectFunction}=require("./utils/mongodb");
 const mongooseDB = require("./utils/mongoosedb");
+const mongooseRoutes=require("./routes/mongoose_routes/Admin");
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
   const store=new mongoDBStore({
@@ -61,9 +62,10 @@ app.use((req,res,next)=>{
 })
 app.use("/admin", Admin);
 app.use("/Sequelize",sequqlize_routes);
-
+app.use("/mongoose",mongooseRoutes);
 app.use(ProductView);
 app.use(Error);
+
 
 // app.use((req,res,next)=>{
 // count++;
