@@ -64,8 +64,6 @@ app.use("/Sequelize",sequqlize_routes);
 app.use(ProductView);
 app.use(Error);
 
-
-
 // app.use((req,res,next)=>{
 // count++;
 // console.log("Hello World");

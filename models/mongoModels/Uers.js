@@ -28,7 +28,6 @@ class User{
             $and:[{email:email},{password:password}]
         });
     }
-
     addToCart(product){
         const db=getDB();
         const index=this.cart.items.findIndex(e => {
