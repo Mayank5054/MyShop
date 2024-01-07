@@ -18,6 +18,7 @@ const userMongoDB=require("./models/mongoModels/Uers");
 const session = require("express-session");
 const mongoDBStore=require("connect-mongodb-session")(session);
 const {mongoConnectFunction}=require("./utils/mongodb");
+const mongooseDB = require("./utils/mongoosedb");
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
   const store=new mongoDBStore({
@@ -116,8 +117,13 @@ seq.sync({force:true})
 .then(user =>{
     console.log(user);
     mongoConnectFunction(()=>{
-       
-        server.listen(5354); 
+       mongooseDB().then(
+        (e)=>{
+            console.log(e);
+            server.listen(5354);
+        }
+       )
+         
     });
   
     console.log("server created");
