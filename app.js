@@ -20,6 +20,7 @@ const mongoDBStore=require("connect-mongodb-session")(session);
 const {mongoConnectFunction}=require("./utils/mongodb");
 const mongooseDB = require("./utils/mongoosedb");
 const mongooseRoutes=require("./routes/mongoose_routes/Admin");
+const mongooseUser = require("./models/mongooseModels/User");
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
   const store=new mongoDBStore({
@@ -51,14 +52,23 @@ app.use((req,res,next)=>{
     // res.setHeader("Set-Cookie","isLoggedIn=true;Max-Age=1");
     // req.isLoggedIn=true;
     req.session.isLoggedIn=true;
-    userMongoDB.findByEmailAndPassword("mayanksheladiya49@gmail.com","Mayank.5354")
-    .then(user =>{
-     console.log("User fetched sucessfully");
-     console.log(user);
-     req.user= new userMongoDB(user.email,user.password,user.cart,user._id);
-    //  console.log("req.user",req.user);
-     next();
-    });
+    // userMongoDB.findByEmailAndPassword("mayanksheladiya49@gmail.com","Mayank.5354")
+    // .then(user =>{
+    //  console.log("User fetched sucessfully");
+    //  console.log(user);
+    // //  req.user= new userMongoDB(user.email,user.password,user.cart,user._id);
+    // //  console.log("req.user",req.user);
+    //  next();
+    // });
+
+    mongooseUser.findById("659ba588f435bf4faff8b4a0")
+    .then(
+        user => {
+            req.user= user;
+            console.log("req.user " , req.user);
+            next();
+        }
+    )
 })
 app.use("/admin", Admin);
 app.use("/Sequelize",sequqlize_routes);
@@ -121,13 +131,17 @@ seq.sync({force:true})
     mongoConnectFunction(()=>{
        mongooseDB().then(
         (e)=>{
-            console.log(e);
-            server.listen(5354);
+        const user = new mongooseUser({
+            name:"Mayank",
+            email:"mayanksheladiya49@gmail.com",
+            cart:{
+                items:[]
+            }
+        })
+                server.listen(5354);
         }
        )
-         
     });
-  
     console.log("server created");
 })
 .catch((e)=>{console.log(e);});
