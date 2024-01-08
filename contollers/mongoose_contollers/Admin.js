@@ -3,12 +3,14 @@ var Product = require("../../models/mongooseModels/Product");
 exports.addProduct = (req,res,next) =>{
     console.log("hello,world");
     res.render("./Mongoose_views/addProductForm.ejs");
-
 }
 
 exports.allProduct = (req,res,next) => {
     Product.find()
+    .select()
+    .populate("userId","name email -_id")
     .then(data => {
+        console.log(data);
         res.render("./Mongoose_views/showAllProduct.ejs",
         {data:data});
         // console.log(data);
@@ -18,10 +20,10 @@ exports.handleAddProduct = (req,res,next) =>{
 const name=req.body.name;
 const price=req.body.price;
 console.log(name , price);
-
 const product=new Product({
 title:name,
-price:price
+price:price,
+userId:req.user
 });
 
 
