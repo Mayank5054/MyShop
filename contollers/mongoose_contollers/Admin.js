@@ -85,3 +85,10 @@ exports.deleteProduct = (req,res,next) =>{
         }
     )
 }
+
+exports.addToCart = (req,res,next) =>{
+    Product.findById(req.body.id)
+    .then(product => {
+        req.user.addProductIntoCart(product);
+    })
+}

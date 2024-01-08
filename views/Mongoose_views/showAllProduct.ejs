@@ -20,6 +20,10 @@
             <input type="hidden" value="<%= a._id %>" name="id">
             <input type="submit" name="delete" value="delete"></input>
         </form>
+        <form action="/mongoose/addToCart" method="POST">
+            <input type="hidden" value="<%= a._id %>" name="id">
+            <input type="submit" name="delete" value="Add To Cart"></input>
+        </form>
         <!-- <form action="/admin/deleteProduct" method="POST">
             <input type="hidden" value="<%= a._id %>" name="id" >
             <input type="submit" name="delete" value="delete"></input>

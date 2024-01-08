@@ -8,6 +8,7 @@ router.post("/addProductSubmit",mongooseController.handleAddProduct);
 router.post("/updateProductPage",mongooseController.updateProduct);
 router.use("/finishProductUpdate",mongooseController.finishUpdate);
 router.post("/deleteProduct",mongooseController.deleteProduct);
+router.post("/addToCart",mongooseController.addToCart);
 // router.get("/showAllProduct",mongooseController.);
 
 module.exports=router;
