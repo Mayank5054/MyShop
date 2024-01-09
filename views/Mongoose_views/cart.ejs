@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Welcome <%= user %>,</h2>
+    <div style="
+        height:auto;
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        row-gap: 15px;
+        
+        flex-direction: column;
+        ">
+        <% if (cart.length == 0) { %>
+<h3> Cart is empty</h3>
+            <% }else { %>
+        <% for (var a of cart) { %>
+<div style="height:50px;width:80%;
+display: flex;
+flex-direction: row;
+column-gap: 15px;
+align-items: center;
+justify-content: center;
+box-shadow:0px 0px 1px black
+">
+<h3><%= a.productId.title%></h3>
+<h2><%= a.quantity%></h2>
+<form action="/mongoose/deleteCartItem" method="POST">
+    <input type="hidden" name="id" value="<%= a.productId._id%>">
+    <input type="submit" value="Delete" name="submit">
+</form>
+</div>
+<% } %>
+<form action="/mongoose/placeOrder" method="POST">
+    <input type="submit" value="Place Order">
+</form>
+<% } %>
+    </div>
+    
+
+</body>
+</html>

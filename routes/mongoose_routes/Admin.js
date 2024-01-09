@@ -9,6 +9,10 @@ router.post("/updateProductPage",mongooseController.updateProduct);
 router.use("/finishProductUpdate",mongooseController.finishUpdate);
 router.post("/deleteProduct",mongooseController.deleteProduct);
 router.post("/addToCart",mongooseController.addToCart);
+router.get("/cart",mongooseController.showCart);
+router.post("/deleteCartItem",mongooseController.deleteCartItem);
+router.get("/order",mongooseController.orders);
+router.post("/placeOrder",mongooseController.placeOrder);
 // router.get("/showAllProduct",mongooseController.);
 
 module.exports=router;

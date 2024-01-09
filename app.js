@@ -61,7 +61,7 @@ app.use((req,res,next)=>{
     //  next();
     // });
 
-    mongooseUser.findById("659ba588f435bf4faff8b4a0")
+    mongooseUser.findById("659cfb4b5c68710d76819953")
     .then(
         user => {
             req.user= user;
@@ -138,7 +138,10 @@ seq.sync({force:true})
                 items:[]
             }
         })
-                server.listen(5354);
+        user.save().then(result => {
+            console.log("user created");
+            server.listen(5354);
+        })
         }
        )
     });
