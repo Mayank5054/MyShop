@@ -15,17 +15,19 @@ const Order=require("./models_sequelize/order");
 const OrderItem=require("./models_sequelize/orderItem");
 const sequqlize_routes=require("./routes/Sequelize_routes/Admin");
 const userMongoDB=require("./models/mongoModels/Uers");
-const session = require("express-session");
-const mongoDBStore=require("connect-mongodb-session")(session);
+
 const {mongoConnectFunction}=require("./utils/mongodb");
 const mongooseDB = require("./utils/mongoosedb");
 const mongooseRoutes=require("./routes/mongoose_routes/Admin");
 const mongooseUser = require("./models/mongooseModels/User");
+const session = require("express-session");
+const mongoSession = require("connect-mongodb-session")(session);
+
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
-  const store=new mongoDBStore({
-    uri:"mongodb+srv://Mayank5354:Mayank%2E5354@cluster0.yofgfpa.mongodb.net/myShop",
-    collection:"Sessions"
+  const store=new mongoSession({
+    uri:"mongodb+srv://Mayank5354:Mayank%2E5354@cluster0.yofgfpa.mongodb.net/myShopMongoose",
+    collection:"sessions"
   })
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -41,7 +43,6 @@ app.use(express.static(path.join(root, "Public")));
 
 // same as above but for mongodb
 
-
 app.use(session({
     secret:"Mayank.5354",
     resave:false,
@@ -49,9 +50,10 @@ app.use(session({
     store:store
 }));
 app.use((req,res,next)=>{
+    console.log(req.session);
     // res.setHeader("Set-Cookie","isLoggedIn=true;Max-Age=1");
     // req.isLoggedIn=true;
-    req.session.isLoggedIn=true;
+    // req.session.isLoggedIn=true;
     // userMongoDB.findByEmailAndPassword("mayanksheladiya49@gmail.com","Mayank.5354")
     // .then(user =>{
     //  console.log("User fetched sucessfully");
@@ -65,6 +67,8 @@ app.use((req,res,next)=>{
     .then(
         user => {
             req.user= user;
+            req.session.user=user;
+            console.log("session ",req.session);
             console.log("req.user " , req.user);
             next();
         }
