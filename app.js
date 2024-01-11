@@ -49,19 +49,22 @@ app.use(session({
     store:store
 }));
 app.use(csrfProtection);
-
+app.use((req,res,next) => {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+})
 app.use((req,res,next)=>{
-    if(req.session.user){
+    if(!req.session.user){
+      return next();
+    }
         console.log(req.session);
         mongooseUser.findById(req.session.user._id)
         .then(user => {
             req.user=user;
             next();
         })
-    }
-    else{
-        res.redirect("/mongoose/login");
-    }
+    
+   
    
     // res.setHeader("Set-Cookie","isLoggedIn=true;Max-Age=1");
     // req.isLoggedIn=true;
@@ -86,10 +89,7 @@ app.use((req,res,next)=>{
     // )
 
 })
-app.use((req,res,next) => {
-    res.locals.csrfToken = req.csrfToken();
-    next();
-})
+
 app.use("/admin", Admin);
 app.use("/Sequelize",sequqlize_routes);
 app.use("/mongoose",mongooseRoutes);

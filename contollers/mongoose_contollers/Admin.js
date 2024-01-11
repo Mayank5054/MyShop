@@ -198,8 +198,10 @@ exports.getLogin = (req,res,next) => {
 exports.postLogin = (req,res,next) => {
 const email=req.body.email;
 const password=req.body.password;
+console.log(email,password);
 User.findOne({email:email})
 .then(user => {
+    console.log(user);
     if(user){
         bcrypt.compare(password,user.password)
         .then(result => {
@@ -222,7 +224,11 @@ User.findOne({email:email})
         })
         
     }
+    else{
+        console.log("no user found");
+    }
 })
+.catch(err => {console.log(err);})
 
 }
 exports.getSignup = (req,res,next) => {
@@ -265,5 +271,6 @@ exports.getLogout = (req,res,next) => {
     req.session.destroy((err) => {
         console.log(err);
         res.redirect("/mongoose/login");
-    });
+    })
+    
 }
