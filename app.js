@@ -21,12 +21,14 @@ const mongooseRoutes=require("./routes/mongoose_routes/Admin");
 const mongooseUser = require("./models/mongooseModels/User");
 const session = require("express-session");
 const mongoSession = require("connect-mongodb-session")(session);
+const csrf=require("csurf");
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
   const store=new mongoSession({
     uri:"mongodb+srv://Mayank5354:Mayank%2E5354@cluster0.yofgfpa.mongodb.net/myShopMongoose",
     collection:"sessions"
   })
+  const csrfProtection = csrf();
 app.set("view engine", "ejs");
 app.set("views", "views");
 app.engine("ejs", require("ejs").__express);
@@ -40,13 +42,14 @@ app.use(express.static(path.join(root, "Public")));
 // });
 
 // same as above but for mongodb
-
 app.use(session({
     secret:"Mayank.5354",
     resave:false,
     saveUninitialized:false,
     store:store
 }));
+app.use(csrfProtection);
+
 app.use((req,res,next)=>{
     if(req.session.user){
         console.log(req.session);
@@ -79,7 +82,10 @@ app.use((req,res,next)=>{
     // )
 
 })
-
+app.use((req,res,next) => {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+})
 app.use("/admin", Admin);
 app.use("/Sequelize",sequqlize_routes);
 app.use("/mongoose",mongooseRoutes);

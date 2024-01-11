@@ -32,12 +32,14 @@ box-shadow:0px 0px 1px black
 <h3><%= a.productId.title%></h3>
 <h2><%= a.quantity%></h2>
 <form action="/mongoose/deleteCartItem" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <input type="hidden" name="id" value="<%= a.productId._id%>">
     <input type="submit" value="Delete" name="submit">
 </form>
 </div>
 <% } %>
 <form action="/mongoose/placeOrder" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <input type="submit" value="Place Order">
 </form>
 <% } %>
