@@ -1,5 +1,9 @@
 const Order = require("../../models/mongooseModels/Order");
 const Product = require("../../models/mongooseModels/Product");
+const User=require("../../models/mongooseModels/User");
+const bcrypt = require("bcryptjs");
+
+
 exports.addProduct = (req,res,next) =>{
     console.log("hello,world");
     res.render("./Mongoose_views/addProductForm.ejs");
@@ -25,10 +29,10 @@ title:name,
 price:price,
 userId:req.user
 });
-
-
+console.log("req.user" , req.user);
 product.save()
 .then( result =>{
+    console.log("result",result);
     Product.find()
     .then(data => {
         res.render("./Mongoose_views/showAllProduct.ejs",
@@ -106,7 +110,7 @@ exports.showCart = (req,res,next) => {
    .then(result => {
     console.log(result.cart.items);
     res.render("./Mongoose_views/cart.ejs",{
-        user:req.user.name,
+        user:req.user.email,
         cart:result.cart.items
     });
    })
@@ -172,10 +176,11 @@ exports.orders = (req,res,next) => {
     .populate("userId")
     .then(data => {
         if(data.length != 0) {
-        const name=data[0].userId.name;
+        const email=data[0].userId.email;
         console.log(data);
+        console.log("order data",data);
         res.render("./Mongoose_views/Order.ejs",{
-            name:name,
+            name:email,
             data:data
         });
     }
@@ -183,4 +188,75 @@ exports.orders = (req,res,next) => {
         console.log("No Orders");
     }
     })
+}
+
+
+exports.getLogin = (req,res,next) => {
+    res.render("./Mongoose_views/login.ejs");
+}
+
+exports.postLogin = (req,res,next) => {
+const email=req.body.email;
+const password=req.body.password;
+User.findOne({email:email})
+.then(user => {
+    if(user){
+        bcrypt.compare(password,user.password)
+        .then(result => {
+            req.session.user=user;
+            req.session.isLoggedIn=true;
+            console.log(user);
+            req.session.save(err => {
+                User.findById(user._id)
+                .then(
+                    user =>{
+                        req.user=user;
+                        console.log(req.user);
+                        console.log("session saved");
+                        res.redirect("/mongoose/add");
+                    }
+                )
+               
+            })
+            console.log("authentication success");
+        })
+        
+    }
+})
+
+}
+exports.getSignup = (req,res,next) => {
+    res.render("./Mongoose_views/signup.ejs");
+}
+
+exports.postSignup = (req,res,next) => {
+ const email = req.body.email;
+ const password=req.body.password;
+ bcrypt.hash(password,12)
+ .then(password => {
+  User.findOne({email:email})
+ .then(result => {
+    if(result){
+        console.log("user already exists");
+        res.redirect("/mongoose/login");
+    }
+    else {
+        const user = new User({
+            email:email,
+            password:password,
+            cart:{items:[]}
+         })
+        user.save().then(
+            result => {
+                console.log(result);
+                console.log("User created successfully");
+                res.redirect("/mongoose/login");
+            }
+         )
+    }
+ })
+ })
+ 
+ 
+ 
 }

@@ -13,6 +13,10 @@ router.get("/cart",mongooseController.showCart);
 router.post("/deleteCartItem",mongooseController.deleteCartItem);
 router.get("/order",mongooseController.orders);
 router.post("/placeOrder",mongooseController.placeOrder);
+router.get("/login",mongooseController.getLogin);
+router.post("/postLogin",mongooseController.postLogin);
+router.get("/signup",mongooseController.getSignup);
+router.post("/postSignup",mongooseController.postSignup);
 // router.get("/showAllProduct",mongooseController.);
 
 module.exports=router;

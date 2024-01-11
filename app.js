@@ -15,14 +15,12 @@ const Order=require("./models_sequelize/order");
 const OrderItem=require("./models_sequelize/orderItem");
 const sequqlize_routes=require("./routes/Sequelize_routes/Admin");
 const userMongoDB=require("./models/mongoModels/Uers");
-
 const {mongoConnectFunction}=require("./utils/mongodb");
 const mongooseDB = require("./utils/mongoosedb");
 const mongooseRoutes=require("./routes/mongoose_routes/Admin");
 const mongooseUser = require("./models/mongooseModels/User");
 const session = require("express-session");
 const mongoSession = require("connect-mongodb-session")(session);
-
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
   const store=new mongoSession({
@@ -50,7 +48,14 @@ app.use(session({
     store:store
 }));
 app.use((req,res,next)=>{
-    console.log(req.session);
+    if(req.session.user){
+        console.log(req.session);
+        mongooseUser.findById(req.session.user._id)
+        .then(user => {
+            req.user=user;
+            next();
+        })
+    }
     // res.setHeader("Set-Cookie","isLoggedIn=true;Max-Age=1");
     // req.isLoggedIn=true;
     // req.session.isLoggedIn=true;
@@ -62,18 +67,19 @@ app.use((req,res,next)=>{
     // //  console.log("req.user",req.user);
     //  next();
     // });
+    // mongooseUser.findById("659cfb4b5c68710d76819953")
+    // .then(
+    //     user => {
+    //         req.user= user;
+    //         req.session.user=user;
+    //         console.log("session ",req.session);
+    //         console.log("req.user " , req.user);
+    //         next();
+    //     }
+    // )
 
-    mongooseUser.findById("659cfb4b5c68710d76819953")
-    .then(
-        user => {
-            req.user= user;
-            req.session.user=user;
-            console.log("session ",req.session);
-            console.log("req.user " , req.user);
-            next();
-        }
-    )
 })
+
 app.use("/admin", Admin);
 app.use("/Sequelize",sequqlize_routes);
 app.use("/mongoose",mongooseRoutes);
@@ -133,21 +139,27 @@ seq.sync({force:true})
 .then(user =>{
     console.log(user);
     mongoConnectFunction(()=>{
-       mongooseDB().then(
-        (e)=>{
-        const user = new mongooseUser({
-            name:"Mayank",
-            email:"mayanksheladiya49@gmail.com",
-            cart:{
-                items:[]
+        mongooseDB().then(
+            result => {
+                server.listen(5354);
             }
-        })
-        user.save().then(result => {
-            console.log("user created");
-            server.listen(5354);
-        })
-        }
-       )
+        )
+    //    mongooseDB().then(
+    //     (e)=>{
+    //     const user = new mongooseUser({
+    //         name:"Mayank",
+    //         email:"mayanksheladiya49@gmail.com",
+    //         cart:{
+    //             items:[]
+    //         }
+    //     })
+    //     user.save().then(result => {
+    //         console.log("user created");
+    //         server.listen(5354);
+    //     })
+    //     }
+    //    )
+    
     });
     console.log("server created");
 })
