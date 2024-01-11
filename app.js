@@ -59,6 +59,10 @@ app.use((req,res,next)=>{
             next();
         })
     }
+    else{
+        res.redirect("/mongoose/login");
+    }
+   
     // res.setHeader("Set-Cookie","isLoggedIn=true;Max-Age=1");
     // req.isLoggedIn=true;
     // req.session.isLoggedIn=true;

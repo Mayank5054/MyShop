@@ -17,6 +17,7 @@ router.get("/login",mongooseController.getLogin);
 router.post("/postLogin",mongooseController.postLogin);
 router.get("/signup",mongooseController.getSignup);
 router.post("/postSignup",mongooseController.postSignup);
+router.get("/logout",mongooseController.getLogout);
 // router.get("/showAllProduct",mongooseController.);
 
 module.exports=router;
