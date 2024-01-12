@@ -22,6 +22,8 @@ const mongooseUser = require("./models/mongooseModels/User");
 const session = require("express-session");
 const mongoSession = require("connect-mongodb-session")(session);
 const csrf=require("csurf");
+const nodemailer=require("nodemailer");
+const mailTransport = require("nodemailer-sendgrid-transport");
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
   const store=new mongoSession({
@@ -29,6 +31,12 @@ const seq = require("./utils/db_sequelize");
     collection:"sessions"
   })
   const csrfProtection = csrf();
+  const apiKey = "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";
+  const mailer = nodemailer.createTransport(mailTransport({
+    auth:{
+        api_key:apiKey
+    }
+  }));
 app.set("view engine", "ejs");
 app.set("views", "views");
 app.engine("ejs", require("ejs").__express);
@@ -148,6 +156,12 @@ seq.sync({force:true})
     mongoConnectFunction(()=>{
         mongooseDB().then(
             result => {
+                mailer.sendMail({
+                    to:'mayanksheladiya4448@gmail.com',
+                    from:"mayanksheladiya49@gmail.com",
+                    subject:"Hello Test App",
+                    html:"<h1>Hi, A mail From ms49</h1>"
+                })
                 server.listen(5354);
             }
         )
