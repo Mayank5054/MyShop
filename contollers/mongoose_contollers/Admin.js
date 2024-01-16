@@ -274,3 +274,27 @@ exports.getLogout = (req,res,next) => {
     })
     
 }
+
+
+exports.getReset = (req,res,next) => {
+    res.render("./Mongoose_views/reset.ejs",{
+
+    });
+}
+
+exports.postReset = (req,res,next) => {
+    console.log("/post reset started");
+    console.log(req.session.user);
+    const password=req.body.newPassword;
+    User.findById(req.session.user._id)
+    .then(user => {
+        bcrypt.hash(password,12)
+        .then(newPass => {
+            user.password=newPass;
+            return user.save();
+        })
+        .then(result => {
+            console.log("user password changed");
+        })
+    })
+}

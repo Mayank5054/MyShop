@@ -18,6 +18,8 @@ router.post("/postLogin",mongooseController.postLogin);
 router.get("/signup",mongooseController.getSignup);
 router.post("/postSignup",mongooseController.postSignup);
 router.get("/logout",mongooseController.getLogout);
+router.get("/reset",isAuth,mongooseController.getReset);
+router.post("/postReset",isAuth,mongooseController.postReset);
 // router.get("/showAllProduct",mongooseController.);
 
 module.exports=router;

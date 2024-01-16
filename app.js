@@ -31,9 +31,15 @@ const seq = require("./utils/db_sequelize");
     collection:"sessions"
   })
   const csrfProtection = csrf();
-  const apiKey = "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";
+  const apiKey = "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";
   const mailer = nodemailer.createTransport(mailTransport({
     auth:{
+        // service:'gmail',
+        // auth:{
+        //     user:"mayanksheladiya49@gmail.com",
+        //     pass:"Hitesh@Manisha5354"
+        // }
+        // api_user:'mayanksheladiya49@gmail.com',
         api_key:apiKey
     }
   }));
@@ -156,13 +162,17 @@ seq.sync({force:true})
     mongoConnectFunction(()=>{
         mongooseDB().then(
             result => {
-                mailer.sendMail({
-                    to:'mayanksheladiya4448@gmail.com',
-                    from:"mayanksheladiya49@gmail.com",
-                    subject:"Hello Test App",
-                    html:"<h1>Hi, A mail From ms49</h1>"
-                })
+                // mailer.sendMail({
+                //     from:"mayanksheladiya49@gmail.com",
+                //     to:'mayanksheladiya4448@gmail.com',
+                //     subject:"Hello Test App",
+                //     html:"<h1>Hi, A mail From ms49</h1>"
+                // },(error,info) => {
+                //     console.log(info);
+                //     console.log(error);
+                // })
                 server.listen(5354);
+               
             }
         )
     //    mongooseDB().then(
