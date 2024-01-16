@@ -2,7 +2,7 @@ const Order = require("../../models/mongooseModels/Order");
 const Product = require("../../models/mongooseModels/Product");
 const User=require("../../models/mongooseModels/User");
 const bcrypt = require("bcryptjs");
-
+const { validationResult } = require("express-validator");
 
 exports.addProduct = (req,res,next) =>{
     console.log("hello,world");
@@ -198,6 +198,8 @@ exports.getLogin = (req,res,next) => {
 exports.postLogin = (req,res,next) => {
 const email=req.body.email;
 const password=req.body.password;
+const error= validationResult(req);
+console.log("validation result" , error);
 console.log(email,password);
 User.findOne({email:email})
 .then(user => {
@@ -205,24 +207,29 @@ User.findOne({email:email})
     if(user){
         bcrypt.compare(password,user.password)
         .then(result => {
-            req.session.user=user;
-            req.session.isLoggedIn=true;
-            console.log(user);
-            req.session.save(err => {
-                User.findById(user._id)
-                .then(
-                    user =>{
-                        req.user=user;
-                        console.log(req.user);
-                        console.log("session saved");
-                        res.redirect("/mongoose/add");
-                    }
-                )
-               
-            })
-            console.log("authentication success");
+            if(result){
+                req.session.user=user;
+                req.session.isLoggedIn=true;
+                console.log(user);
+                req.session.save(err => {
+                    User.findById(user._id)
+                    .then(
+                        user =>{
+                            req.user=user;
+                            console.log(req.user);
+                            console.log("session saved");
+                            res.redirect("/mongoose/add");
+                        }
+                    )
+                   
+                })
+                console.log("authentication success");
+            }
+            else{
+                console.log("password mismatched");
+            }
+            
         })
-        
     }
     else{
         console.log("no user found");
