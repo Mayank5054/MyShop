@@ -24,6 +24,7 @@ const mongoSession = require("connect-mongodb-session")(session);
 const csrf=require("csurf");
 const nodemailer=require("nodemailer");
 const mailTransport = require("nodemailer-sendgrid-transport");
+const multer = require("multer");
 // const seq_model = require("./models/sequelize_product");
 const seq = require("./utils/db_sequelize");
   const store=new mongoSession({
@@ -43,9 +44,18 @@ const seq = require("./utils/db_sequelize");
         api_key:apiKey
     }
   }));
+  const fileStorage = multer.diskStorage({
+    destination : (req,file,cb) => {
+        cb(null,'images');
+    }
+  });
+  const filefilter = (req,file,cb) => {
+    cb(null,true);
+  }
 app.set("view engine", "ejs");
 app.set("views", "views");
 app.engine("ejs", require("ejs").__express);
+app.use(multer({storage:fileStorage}).single("image"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(root, "Public")));
 // app.use((req,res,next)=>{

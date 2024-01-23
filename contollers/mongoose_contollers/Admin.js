@@ -1,6 +1,7 @@
 const Order = require("../../models/mongooseModels/Order");
 const Product = require("../../models/mongooseModels/Product");
 const User=require("../../models/mongooseModels/User");
+const Image = require("../../models/mongooseModels/Images");
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 
@@ -304,4 +305,22 @@ exports.postReset = (req,res,next) => {
             console.log("user password changed");
         })
     })
+}
+
+
+exports.preImageForm = (req,res,next) => {
+res.render("./Mongoose_views/uploadImageForm.ejs");
+}
+
+exports.postImage = (req,res,next) => {
+console.log("image upload added");
+console.log(req.file);
+const image = new Image({
+url:"123",
+userId:req.session.user
+})
+
+image.save().then(result => {
+    console.log("image added");
+})
 }
