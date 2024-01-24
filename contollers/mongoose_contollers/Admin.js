@@ -314,13 +314,25 @@ res.render("./Mongoose_views/uploadImageForm.ejs");
 
 exports.postImage = (req,res,next) => {
 console.log("image upload added");
-console.log(req.file);
+console.log("req.file = " ,req.file);
 const image = new Image({
-url:"123",
+url:req.file.filename,
 userId:req.session.user
 })
 
 image.save().then(result => {
     console.log("image added");
 })
+}
+
+exports.showImage = (req,res,next) => {
+      
+    Image.find().then(
+        result => {
+            console.log(result);
+            res.render("./Mongoose_views/showAllImages.ejs",{
+                data:result
+            })
+        }
+    )
 }

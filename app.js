@@ -47,6 +47,9 @@ const seq = require("./utils/db_sequelize");
   const fileStorage = multer.diskStorage({
     destination : (req,file,cb) => {
         cb(null,'images');
+    },
+    filename:(req,file,cb) => {
+        cb(null,file.originalname);
     }
   });
   const filefilter = (req,file,cb) => {
@@ -58,6 +61,7 @@ app.engine("ejs", require("ejs").__express);
 app.use(multer({storage:fileStorage}).single("image"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(root, "Public")));
+app.use(express.static(path.join(root, "images")));
 // app.use((req,res,next)=>{
 // User.findByPk(1).then(user =>{
 //     req.user=user;

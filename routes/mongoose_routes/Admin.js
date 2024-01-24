@@ -32,6 +32,7 @@ router.get("/reset",isAuth,mongooseController.getReset);
 router.post("/postReset",isAuth,mongooseController.postReset);
 router.get("/uploadImage",mongooseController.preImageForm);
 router.post("/postImage",mongooseController.postImage);
+router.get("/allImages",mongooseController.showImage);
 // router.get("/showAllProduct",mongooseController.);
 
 module.exports=router;
