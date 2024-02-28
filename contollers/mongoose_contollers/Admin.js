@@ -280,7 +280,6 @@ exports.getLogout = (req,res,next) => {
         console.log(err);
         res.redirect("/mongoose/login");
     })
-    
 }
 
 
