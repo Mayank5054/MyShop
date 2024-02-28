@@ -74,7 +74,7 @@ app.use(session({
     secret:"Mayank.5354",
     resave:false,
     saveUninitialized:false,
-    store:store
+    // store:store
 }));
 app.use(csrfProtection);
 app.use((req,res,next) => {
